@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: theme.spacing(10, 0),
+    minHeight: "95vh",
   },
   paper: {
     padding: theme.spacing(2),
@@ -32,10 +33,10 @@ export default function FullWidthGrid() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Typography className={classes.paper} component="div">
-            <Typography variant="h4" gutterBottom="true" align="center">
+            <Typography variant="h4" gutterBottom align="center">
               Create a voting poll with us
             </Typography>
-            <Typography variant="body1" gutterBottom="true" align="center">
+            <Typography variant="body1" gutterBottom align="center">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
@@ -44,7 +45,7 @@ export default function FullWidthGrid() {
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography className={classes.paper} variant="div">
+          <Typography className={classes.paper} component="div">
             <img className={classes.image} src={homeImage} alt="_avatar_" />
           </Typography>
         </Grid>

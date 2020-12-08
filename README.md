@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9130fc32-257e-471a-93a8-3b65d104d78c/deploy-status)](https://app.netlify.com/sites/onlinevotingapp/deploys)
+
 # voting-app-api
 # Getting Started with Create React App
 

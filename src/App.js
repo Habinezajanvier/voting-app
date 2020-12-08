@@ -3,9 +3,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { Container, Typography, Link } from "@material-ui/core";
 import NavBar from "./components/AppBar";
 import Homepage from "./components/Homepage";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Polls from "./components/Polls";
 
 const Footer = () => (
-  <Typography variant="body2" color="black" align="center">
+  <Typography variant="body2" color="primary" align="center">
     {"Copyright © "}
     <Link color="inherit" href="/">
       OnlineVote
@@ -21,7 +23,12 @@ export default function App() {
       <CssBaseline />
       <Container maxWidth="lg">
         <NavBar />
-        <Homepage />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/polls" component={Polls} />
+          </Switch>
+        </Router>
         <Footer />
       </Container>
     </React.Fragment>
