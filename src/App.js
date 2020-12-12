@@ -1,11 +1,29 @@
-import "./App.css";
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { Container, Typography, Link } from "@material-ui/core";
+import NavBar from "./components/AppBar";
+import Homepage from "./components/Homepage";
 
-function App() {
+const Footer = () => (
+  <Typography variant="body2" color="black" align="center">
+    {"Copyright © "}
+    <Link color="inherit" href="/">
+      OnlineVote
+    </Link>{" "}
+    {new Date().getFullYear()}
+    {"."}
+  </Typography>
+);
+
+export default function App() {
   return (
-    <div className="App">
-      <h1>This is the voting app</h1>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <NavBar />
+        <Homepage />
+        <Footer />
+      </Container>
+    </React.Fragment>
   );
 }
-
-export default App;
