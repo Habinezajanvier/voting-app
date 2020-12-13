@@ -11,9 +11,11 @@ import {
   CardContent,
   CardActions,
   Button,
+  Fab,
 } from "@material-ui/core";
 import { Doughnut } from "react-chartjs-2";
 import polls from "./polls";
+import CreatePolls from "./CreatePoll";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(8.5),
     left: "48%",
     color: "primary",
-    // borderRadius: "50%",
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 
@@ -92,13 +94,6 @@ function CandidateCard({ name, score, image }) {
 
   return (
     <Grid item xs={6}>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        className={classes.create}
-        startIcon={<AddIcon />}
-      ></Button>
       <Card className={classes.card}>
         <CardActionArea>
           <CardMedia
@@ -137,9 +132,25 @@ function CandidateCard({ name, score, image }) {
 
 export default function Polls() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleToggle = () => {
+    setOpen(!open);
+  };
 
   return (
     <div className={classes.root}>
+      <Fab
+        color="primary"
+        aria-label="add"
+        onClick={handleToggle}
+        className={classes.create}
+      >
+        <AddIcon />
+      </Fab>
+      <CreatePolls open={open} handleClose={handleClose} />
       {polls.map((poll, index) => {
         let theItem = [];
         let theScore = [];
