@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
   Grid,
   Paper,
@@ -12,10 +13,18 @@ import {
   CardActions,
   Button,
   Fab,
+  IconButton,
 } from "@material-ui/core";
 import { Doughnut } from "react-chartjs-2";
-import polls from "./polls";
+import ResponseSnack from "./SnackBar";
 import CreatePolls from "./CreatePoll";
+import {
+  getAllPoll,
+  addVote,
+  clearStates,
+  deletePoll,
+} from "../../redux/actions/polls";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary,
+    position: "relative",
   },
   card: {
     maxWidth: 345,
@@ -41,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
     left: "48%",
     color: "primary",
     zIndex: theme.zIndex.drawer + 1,
+  },
+  actions: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
   },
 }));
 
@@ -89,8 +104,13 @@ const Chart = ({ items, data }) => {
   );
 };
 
-function CandidateCard({ name, score, image }) {
+function CandidateCard({ id, itemId, name, score, image }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const votingHandle = (id, itemId) => {
+    dispatch(addVote(id, itemId, score + 1));
+  };
 
   return (
     <Grid item xs={6}>
@@ -121,7 +141,11 @@ function CandidateCard({ name, score, image }) {
           <Button size="small" color="primary">
             Share
           </Button>
-          <Button size="small" color="primary">
+          <Button
+            onClick={() => votingHandle(id, itemId, name)}
+            size="small"
+            color="primary"
+          >
             Vote
           </Button>
         </CardActions>
@@ -132,16 +156,76 @@ function CandidateCard({ name, score, image }) {
 
 export default function Polls() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [snackOpen, setSnackOpen] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+  const { voted } = useSelector((state) => state.voting);
+  const { polls, pollIds, success, deleteSuccess } = useSelector(
+    (state) => state.polls
+  );
+
   const handleClose = () => {
     setOpen(false);
   };
   const handleToggle = () => {
     setOpen(!open);
   };
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
+  const handleDeletePoll = (id) => {
+    dispatch(deletePoll(id));
+  };
+
+  useEffect(() => {
+    setSnackOpen(false);
+    dispatch(getAllPoll());
+  }, [dispatch]);
+  useEffect(() => {
+    if (voted) {
+      setSnackOpen(true);
+      setMessage("You have successfully voted");
+      setInterval(() => {
+        dispatch(getAllPoll());
+        dispatch(clearStates());
+      }, 6000);
+    }
+  }, [voted, dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      setSnackOpen(true);
+      setMessage("You have successfully created a voting poll");
+      setInterval(() => {
+        window.location.reload();
+      }, 6000);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      setSnackOpen(true);
+      setMessage("Your Poll is deleted successfully");
+      dispatch(getAllPoll());
+      setInterval(() => {
+        dispatch(clearStates());
+      }, 6000);
+    }
+  }, [deleteSuccess, dispatch]);
 
   return (
     <div className={classes.root}>
+      <ResponseSnack
+        open={snackOpen}
+        handleClose={handleSnackClose}
+        message={message}
+      />
       <Fab
         color="primary"
         aria-label="add"
@@ -154,6 +238,7 @@ export default function Polls() {
       {polls.map((poll, index) => {
         let theItem = [];
         let theScore = [];
+        const pollIndex = index;
 
         poll.items.forEach((item) => {
           theItem.push(item.name);
@@ -162,14 +247,22 @@ export default function Polls() {
         return (
           <Grid key={index} container spacing={3}>
             <Grid item xs={6}>
-              <Paper className={classes.paper}>
+              <Paper id={pollIds[index]} className={classes.paper}>
                 <Typography variant="h6" gutterBottom align="center">
-                  {poll.name}
+                  {poll.title}
                 </Typography>
                 <Typography variant="body2" gutterBottom align="center">
                   {poll.description}
                 </Typography>
                 <Chart items={theItem} data={theScore} />
+                <div className={classes.actions}>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => handleDeletePoll(pollIds[pollIndex])}
+                  >
+                    <DeleteIcon color="secondary" fontSize="large" />
+                  </IconButton>
+                </div>
               </Paper>
             </Grid>
             <Grid item xs={6}>
@@ -177,7 +270,9 @@ export default function Polls() {
                 <Grid container spacing={1}>
                   {poll.items.map((item, index) => (
                     <CandidateCard
-                      key={index}
+                      id={pollIds[pollIndex]}
+                      itemId={index}
+                      key={item.name}
                       name={item.name}
                       image={item.image}
                       score={item.score}
