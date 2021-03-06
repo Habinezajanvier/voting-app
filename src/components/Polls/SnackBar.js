@@ -6,7 +6,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const ResponseSnack = ({ open, handleClose, message }) => (
+const ResponseSnack = ({ open, handleClose, message, color }) => (
   <Snackbar
     anchorOrigin={{
       vertical: "top",
@@ -16,7 +16,7 @@ const ResponseSnack = ({ open, handleClose, message }) => (
     autoHideDuration={6000}
     onClose={handleClose}
   >
-    <Alert onClose={handleClose} severity="success">
+    <Alert onClose={handleClose} severity={color}>
       {message}
     </Alert>
   </Snackbar>

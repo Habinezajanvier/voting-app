@@ -1,5 +1,5 @@
 export const SET_LOADING = "SET_LOADING";
-export const SET_USER = "SET_USER";
+export const SET_AUTH_SUCCESS = "SET_AUTH_SUCCESS";
 export const SET_RESPONSE = "SET_RESPONSE";
 export const SET_ERRORS = "SET_ERRORS";
 export const SET_SUCCESS = "SET_SUCCESS";
@@ -11,3 +11,8 @@ export const SET_VOTE_LOADING = "SET_VOTE_LOADING";
 export const MAKE_VOTE = "MAKE_VOTE";
 export const CLEAR_STATES = "CLEAR_VOTES";
 export const SET_DELETE_SUCCESS = "SET_DELETE_SUCCESS";
+export const SET_AUTH_LOADING = "SET_LOGIN_LOADING";
+export const SET_LOGIN_SUCCESS = "SET_LOGIN_SUCCESS";
+export const SET_AUTH_ERRORS = "SET_LOGIN_ERROR";
+export const SET_SIGNUP_LOADING = "SET_SIGNUP_LOADING";
+export const LOG_USER_OUT="LOG_USER_OUT"

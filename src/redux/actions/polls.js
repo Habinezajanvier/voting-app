@@ -71,6 +71,5 @@ export const deletePoll = (id) => (dispatch) => {
 };
 
 export const clearStates = () => (dispatch) => {
-  console.log("voted");
   dispatch({ type: CLEAR_STATES });
 };

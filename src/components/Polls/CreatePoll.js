@@ -86,7 +86,7 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-export default function CreatePoll({ open, handleClose }) {
+export default function CreatePoll({ open, handleClose, loading }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [item, setItem] = useState({
@@ -162,7 +162,7 @@ export default function CreatePoll({ open, handleClose }) {
             Create a Voting Poll
           </Typography>
           <Grid container>
-            <Grid item xs={8}>
+            <Grid item sm={12} md={8}>
               <Paper className={classes.innerPaper}>
                 <form className={classes.form}>
                   <TextField
@@ -220,12 +220,12 @@ export default function CreatePoll({ open, handleClose }) {
                       !poll.title || !poll.description || !poll.items.length
                     }
                   >
-                    Save
+                    {loading ? <CircularProgress size={24} /> : "Save"}
                   </Button>
                 </form>
               </Paper>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item sm={6} md={4}>
               <Paper className={classes.innerPaper}>
                 <Typography
                   gutterBottom
