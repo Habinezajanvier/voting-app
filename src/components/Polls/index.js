@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: theme.spacing(10, 0),
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 100px)",
   },
   paper: {
     minHeight: "90vh",
@@ -113,7 +113,7 @@ function CandidateCard({ id, itemId, name, score, image }) {
   };
 
   return (
-    <Grid item xs={6}>
+    <Grid item xs={12} md={6}>
       <Card className={classes.card}>
         <CardActionArea>
           <CardMedia
@@ -160,8 +160,10 @@ export default function Polls() {
   const [open, setOpen] = React.useState(false);
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
+  const [snackColor, setSnackColor] = React.useState(null);
   const { voted } = useSelector((state) => state.voting);
-  const { polls, pollIds, success, deleteSuccess } = useSelector(
+  const { authSuccess } = useSelector((state) => state.auth);
+  const { polls, pollIds, success, deleteSuccess, loading } = useSelector(
     (state) => state.polls
   );
 
@@ -191,6 +193,7 @@ export default function Polls() {
     if (voted) {
       setSnackOpen(true);
       setMessage("You have successfully voted");
+      setSnackColor("success");
       setInterval(() => {
         dispatch(getAllPoll());
         dispatch(clearStates());
@@ -202,6 +205,7 @@ export default function Polls() {
     if (success) {
       setSnackOpen(true);
       setMessage("You have successfully created a voting poll");
+      setSnackColor("success");
       setInterval(() => {
         window.location.reload();
       }, 6000);
@@ -211,6 +215,7 @@ export default function Polls() {
   useEffect(() => {
     if (deleteSuccess) {
       setSnackOpen(true);
+      setSnackColor("success");
       setMessage("Your Poll is deleted successfully");
       dispatch(getAllPoll());
       setInterval(() => {
@@ -222,19 +227,22 @@ export default function Polls() {
   return (
     <div className={classes.root}>
       <ResponseSnack
+        color={snackColor}
         open={snackOpen}
         handleClose={handleSnackClose}
         message={message}
       />
-      <Fab
-        color="primary"
-        aria-label="add"
-        onClick={handleToggle}
-        className={classes.create}
-      >
-        <AddIcon />
-      </Fab>
-      <CreatePolls open={open} handleClose={handleClose} />
+      {authSuccess && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={handleToggle}
+          className={classes.create}
+        >
+          <AddIcon />
+        </Fab>
+      )}
+      <CreatePolls open={open} handleClose={handleClose} loading={loading} />
       {polls.map((poll, index) => {
         let theItem = [];
         let theScore = [];
@@ -246,7 +254,7 @@ export default function Polls() {
         });
         return (
           <Grid key={index} container spacing={3}>
-            <Grid item xs={6}>
+            <Grid item sm={6} xs={12}>
               <Paper id={pollIds[index]} className={classes.paper}>
                 <Typography variant="h6" gutterBottom align="center">
                   {poll.title}
@@ -255,17 +263,19 @@ export default function Polls() {
                   {poll.description}
                 </Typography>
                 <Chart items={theItem} data={theScore} />
-                <div className={classes.actions}>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeletePoll(pollIds[pollIndex])}
-                  >
-                    <DeleteIcon color="secondary" fontSize="large" />
-                  </IconButton>
-                </div>
+                {authSuccess && (
+                  <div className={classes.actions}>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDeletePoll(pollIds[pollIndex])}
+                    >
+                      <DeleteIcon color="secondary" fontSize="large" />
+                    </IconButton>
+                  </div>
+                )}
               </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item sm={6} xs={12}>
               <Paper className={classes.paper}>
                 <Grid container spacing={1}>
                   {poll.items.map((item, index) => (

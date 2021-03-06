@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import auth from "./login";
+import auth from "./auth";
 import polls from "./polls";
 import votes from "./votes";
 

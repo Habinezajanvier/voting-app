@@ -43,18 +43,21 @@ const createPollReducer = (state = initialState, action) => {
     case SET_SUCCESS:
       return {
         ...state,
+        loading: null,
         success: true,
       };
 
     case SET_DELETE_SUCCESS:
       return {
         ...state,
+        loading: null,
         deleteSuccess: true,
       };
 
     case CLEAR_STATES:
       return {
         ...state,
+        loading: null,
         deleteSuccess: false,
       };
 

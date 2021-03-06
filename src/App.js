@@ -5,6 +5,8 @@ import NavBar from "./components/AppBar";
 import Homepage from "./components/Homepage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Polls from "./components/Polls";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
 
 const Footer = () => (
   <Typography variant="body2" color="primary" align="center">
@@ -27,6 +29,8 @@ export default function App() {
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/polls" component={Polls} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/login" component={Login} />
           </Switch>
         </Router>
         <Footer />

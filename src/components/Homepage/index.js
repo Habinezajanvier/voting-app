@@ -6,8 +6,8 @@ import homeImage from "../../assets/undraw_voting_nvu7.png";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    margin: theme.spacing(10, 0),
-    minHeight: "95vh",
+    marginTop: theme.spacing(16),
+    minHeight: "calc(100vh - 150px)",
   },
   paper: {
     padding: theme.spacing(2),
@@ -37,10 +37,10 @@ export default function FullWidthGrid() {
               Create a voting poll with us
             </Typography>
             <Typography variant="body1" gutterBottom align="center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              “If there have been those who doubted whether a confederated
+              representative democracy were a government competent to the wise
+              and orderly management of the common concerns of a mighty nation,
+              those doubts have been dispelled.” —John Quincy Adams
             </Typography>
           </Typography>
         </Grid>
